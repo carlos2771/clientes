@@ -1,75 +1,68 @@
 import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 
-class EditCliente extends StatefulWidget {
-  const EditCliente({super.key});
+class EditCitas extends StatefulWidget {
+  const EditCitas({super.key});
 
   @override
-  State<EditCliente> createState() => _EditClienteState();
+  State<EditCitas> createState() => _EditClienteState();
 }
 
-class _EditClienteState extends State<EditCliente> {
+class _EditClienteState extends State<EditCitas> {
 
   TextEditingController nombreController = TextEditingController(text: "");
-  TextEditingController apellidoController = TextEditingController(text: "");
-  TextEditingController telefonoController = TextEditingController(text: "");
-  TextEditingController emailController = TextEditingController(text: "");
-  TextEditingController documentoController = TextEditingController(text: ""); 
-  TextEditingController passwordController = TextEditingController(text: ""); 
-
+  TextEditingController fechaController = TextEditingController(text: "");
+  TextEditingController placaController = TextEditingController(text: "");
+  TextEditingController estadoController = TextEditingController(text: "");
+  TextEditingController servicioController = TextEditingController(text: "");
   @override
 
   Widget build(BuildContext context) {
   final Map arguments = ModalRoute.of(context)!.settings.arguments as Map; //  se utiliza para obtener los argumentos pasados a una ruta específica en Flutter y almacenarlos en una variable llamada arguments. Una vez almacenados en arguments, se pueden acceder y utilizar los datos pasados para realizar alguna funcionalidad específica en la pantalla correspondiente.
-  nombreController.text = arguments["nombre"];
-  apellidoController.text = arguments["apellido"];
-  telefonoController.text = arguments["telefono"];
-  emailController.text = arguments["email"];
-  documentoController.text = arguments["documento"];
-  passwordController.text = arguments["password"];
 
+  nombreController.text = arguments ["nombre"];
+  fechaController.text = arguments ["fecha"];
+  placaController.text = arguments ["placa"];
+  estadoController.text = arguments ["estado"];
+  servicioController.text = arguments ["servicio"];
+  
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agregar cliente"),
+        title: const Text("Editar Cita"),
       ),
       
       body :   Column(
         children: [
            TextField(
+            enabled: false,
             controller: nombreController,
             decoration: const InputDecoration(
-            hintText: "ingrese su nombre",
+            hintText: "",
             ),
           ),
            TextField(
-            controller: apellidoController,
+            controller: fechaController,
             decoration: const InputDecoration(
-            hintText: "ingrese su apellido",
+            hintText: "ingrese la nueva fecha",
             ),
           ),
            TextField(
-            controller: telefonoController,
+            controller: placaController,
             decoration: const InputDecoration(
-            hintText: "ingese su telefono",
+            hintText: "ingrese su nueva placa",
             ),
           ),
            TextField(
-            controller: emailController,
+            controller: estadoController,
             decoration: const InputDecoration(
-            hintText: "ingese su email",
+            hintText: "estado",
             ),
           ),
            TextField(
-            controller: documentoController,
+            controller: servicioController,
             decoration: const InputDecoration(
-            hintText: "ingese su documento",
-            ),
-          ),
-           TextField(
-            controller: passwordController,
-            decoration: const InputDecoration(
-            hintText: "ingrese su nueva contraseña",
+            hintText: "ingese su servicio",
             ),
           ),
           ElevatedButton(onPressed: () async{
@@ -79,7 +72,7 @@ class _EditClienteState extends State<EditCliente> {
             // print(arguments["uid"]);// para ver que si este trayendo el id
             // });
 
-            await updateCliente(arguments["uid"], nombreController.text,apellidoController.text, telefonoController.text, emailController.text, documentoController.text, passwordController.text).then((_){
+            await updateCita(arguments["uid"],nombreController.text, fechaController.text, placaController.text, estadoController.text, servicioController.text).then((_){
               Navigator.pop(context);
             });
           }, child: const Text("Acutializar"),)

@@ -1,4 +1,4 @@
-import 'package:clientes/services/firebase_services.dart';
+ import 'package:clientes/services/firebase_services.dart';
 import 'package:clientes/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -44,7 +44,8 @@ class _HomeState extends State<Home> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text("¿Está seguro de querer eliminar a ${cliente["nombre"]}?"),
+                          title: Text(
+                              "¿Está seguro de querer eliminar a ${cliente["nombre"]}?"),
                           actions: [
                             TextButton(
                               onPressed: () {
@@ -71,27 +72,75 @@ class _HomeState extends State<Home> {
                     child: const Icon(Icons.delete),
                   ),
                   direction: DismissDirection.endToStart,
-                  child: ListTile(
-                    title: Text(
-                      "Nombre: ${cliente["nombre"]} Apellido: ${cliente["apellido"]} Teléfono: ${cliente["telefono"]} Email: ${cliente["email"]} Documento: ${cliente["documento"]}",
+                  child: Card(
+                    elevation: 4.0, // Elevación de la tarjeta
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 16.0,
+                        vertical: 8.0), // Margen exterior de la tarjeta
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          12.0), // Borde redondeado de la tarjeta
                     ),
-                    onTap: () async {
-                      await Navigator.pushNamed(context, "/edit", arguments: {
-                        "uid": cliente["uid"],
-                        "nombre": cliente["nombre"],
-                        "apellido": cliente["apellido"],
-                        "telefono": cliente["telefono"],
-                        "email": cliente["email"],
-                        "documento": cliente["documento"],
-                        "password": cliente["password"],
-                      });
-                      setState(() {});
-                    },
-                    trailing: ElevatedButton( // boton de notificacion
-                      onPressed: () {
-                        mostrarNotificacion();
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(
+                          16.0), // Espaciado interior del ListTile
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${cliente["nombre"]} ${cliente["apellido"]}",
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(
+                              height: 4.0), // Espacio entre elementos
+                          Text(
+                            "Teléfono: ${cliente["telefono"]}",
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Color.fromARGB(255, 33, 149, 243),
+                            ),
+                          ),
+                          Text(
+                            "Email: ${cliente["email"]}",
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          Text(
+                            "Documento: ${cliente["documento"]}",
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                      onTap: () async {
+                        await Navigator.pushNamed(context, "/edit", arguments: {
+                          "uid": cliente["uid"],
+                          "nombre": cliente["nombre"],
+                          "apellido": cliente["apellido"],
+                          "telefono": cliente["telefono"],
+                          "email": cliente["email"],
+                          "documento": cliente["documento"],
+                          "password": cliente["password"],
+                        });
+                        setState(() {});
                       },
-                      child: const Text("True"),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, "/citas", arguments: {
+                            "uid": cliente["uid"],
+                            "nombre": cliente["nombre"],
+                          });
+                        },
+                        
+                        child: const Text("Agendar"),
+                      ),
                     ),
                   ),
                 );
@@ -107,6 +156,13 @@ class _HomeState extends State<Home> {
             label: 'Agregar cliente',
             onTap: () async {
               await Navigator.pushNamed(context, "/add");
+              setState(() {});
+            },
+          ),
+          SpeedDialChild(
+            label: 'Citas',
+            onTap: () async {
+              await Navigator.pushNamed(context, "/homecitas");
               setState(() {});
             },
           ),

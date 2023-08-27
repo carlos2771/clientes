@@ -42,6 +42,8 @@ dependencies:
   cloud_firestore: ^4.8.4 #para instanciar cloud firestore de firebase
   flutter_speed_dial: ^7.0.0 #para las animaciones de los botones
   firebase_auth: ^4.7.2 #permite integrar la funcionalidad de autenticación
+  
+
 
 dev_dependencies:
   flutter_test:

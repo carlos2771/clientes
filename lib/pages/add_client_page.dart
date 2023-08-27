@@ -1,9 +1,10 @@
-import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../services/firebase_services.dart';
+
 class AddCliente extends StatefulWidget {
-  const AddCliente({super.key});
+  const AddCliente({Key? key});
 
   @override
   State<AddCliente> createState() => _AddClienteState();
@@ -26,71 +27,74 @@ class _AddClienteState extends State<AddCliente> {
       appBar: AppBar(
         title: const Text("Agregar cliente"),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: nombreController,
-            decoration: const InputDecoration(
-              hintText: "ingrese su nombre",
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              controller: nombreController,
+              decoration: const InputDecoration(
+                hintText: "Ingrese su nombre",
+              ),
             ),
-          ),
-          TextField(
-            controller: apellidoController,
-            decoration: const InputDecoration(
-              hintText: "ingrese su apellido",
+            TextField(
+              controller: apellidoController,
+              decoration: const InputDecoration(
+                hintText: "Ingrese su apellido",
+              ),
             ),
-          ),
-          TextField(
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(10), // Limitar a 10 caracteres
-              FilteringTextInputFormatter.digitsOnly,
-            ],
-            controller: telefonoController,
-            decoration: const InputDecoration(
-              hintText: "ingrese su telefono",
+            TextField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(10), // Limitar a 10 caracteres
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              controller: telefonoController,
+              decoration: const InputDecoration(
+                hintText: "Ingrese su telefono",
+              ),
             ),
-          ),
-          TextField(
-            controller: emailController,
-            decoration: const InputDecoration(
-              hintText: "ingrese su email",
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(
+                hintText: "Ingrese su email",
+              ),
             ),
-          ),
-          TextField(
-            controller: documentoController,
-            decoration: const InputDecoration(
-              hintText: "ingrese su documento",
+            TextField(
+              controller: documentoController,
+              decoration: const InputDecoration(
+                hintText: "Ingrese su documento",
+              ),
             ),
-          ),
-          TextField(
-            controller: password1Controller,
-            decoration: const InputDecoration(
-              hintText: "ingrese contraseña del cliente",
+            TextField(
+              controller: password1Controller,
+              decoration: const InputDecoration(
+                hintText: "Ingrese contraseña del cliente",
+              ),
             ),
-          ),
-          TextField(
-            controller: password2Controller,
-            decoration: const InputDecoration(
-              hintText: "confirme la contraseña",
+            TextField(
+              controller: password2Controller,
+              decoration: const InputDecoration(
+                hintText: "Confirme la contraseña",
+              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              // print(nombreController.text + telefonoController.text + emailController.text + documentoController.text);
-              await addCliente(
-                      nombreController.text,
-                      apellidoController.text,
-                      telefonoController.text,
-                      emailController.text,
-                      documentoController.text,
-                      password1Controller.text)
-                  .then((_) {
-                Navigator.pop(context);
-              });
-            },
-            child: const Text("Guardar"),
-          )
-        ],
+            ElevatedButton(
+              onPressed: () async {
+                // Tu código de acción aquí
+                await addCliente(
+                        nombreController.text,
+                        apellidoController.text,
+                        telefonoController.text,
+                        emailController.text,
+                        documentoController.text,
+                        password1Controller.text)
+                    .then((_) {
+                  Navigator.pop(context);
+                });
+                //  await addParams(nombreController.text);
+              },
+              child: const Text("Guardar"),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,7 @@
+import 'package:clientes/pages/citas/add_citas_page.dart';
+import 'package:clientes/pages/citas/edit_cita_page.dart';
+import 'package:clientes/pages/citas/home_citas_page.dart';
 import 'package:clientes/pages/edit_client_page.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:clientes/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,6 +34,10 @@ class MyApp extends StatelessWidget {
         "/": (context) =>  const Home(),
         "/add": (context) => const AddCliente(),
         "/edit": (context) => const EditCliente(),
+        //citas
+        "/homecitas": (context) => const  HomeCitas(),
+        "/citas": (context) => const AddCitas(),
+        "/editcita" : (context) => const EditCitas(),
         // "/notification": (context) => const Notification(),
     
       },
