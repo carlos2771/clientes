@@ -1,7 +1,12 @@
 import 'package:clientes/pages/citas/add_citas_page.dart';
 import 'package:clientes/pages/citas/edit_cita_page.dart';
 import 'package:clientes/pages/citas/home_citas_page.dart';
+import 'package:clientes/pages/clientes/home_page_cliente.dart';
+import 'package:clientes/pages/clientes/mi_cita.dart';
+import 'package:clientes/pages/clientes/perfil_cliente.dart';
+import 'package:clientes/pages/clientes/register_cliente_page.dart';
 import 'package:clientes/pages/edit_client_page.dart';
+import 'package:clientes/pages/login/login_client_page.dart';
 import 'package:clientes/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,8 +35,10 @@ class MyApp extends StatelessWidget {
       title: "material App",
       initialRoute: "/",
       routes: {
-        // "/": (context) => const Loginclient(),
-        "/": (context) =>  const Home(),
+
+        "/":(context) => const MyLoginPage(title: 'Hola munds',),
+        "/homepage": (context) => const Home(),
+        
         "/add": (context) => const AddCliente(),
         "/edit": (context) => const EditCliente(),
         //citas
@@ -39,6 +46,11 @@ class MyApp extends StatelessWidget {
         "/citas": (context) => const AddCitas(),
         "/editcita" : (context) => const EditCitas(),
         // "/notification": (context) => const Notification(),
+
+        //Register Cliente
+        "/register" :(context) => const RegisterCliente(),
+        "/perfil" :(context) => const PerfilCliente(),
+
     
       },
     );

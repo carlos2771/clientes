@@ -1,5 +1,4 @@
  import 'package:clientes/services/firebase_services.dart';
-import 'package:clientes/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -136,6 +135,7 @@ class _HomeState extends State<Home> {
                           Navigator.pushNamed(context, "/citas", arguments: {
                             "uid": cliente["uid"],
                             "nombre": cliente["nombre"],
+                            "documento": cliente["documento"],
                           });
                         },
                         
@@ -163,6 +163,13 @@ class _HomeState extends State<Home> {
             label: 'Citas',
             onTap: () async {
               await Navigator.pushNamed(context, "/homecitas");
+              setState(() {});
+            },
+          ),
+          SpeedDialChild(
+            label: 'Salir',
+            onTap: () async {
+              await Navigator.pushNamed(context, "/");
               setState(() {});
             },
           ),

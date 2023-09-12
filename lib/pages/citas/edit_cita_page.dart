@@ -13,6 +13,7 @@ class _EditClienteState extends State<EditCitas> {
   TextEditingController nombreController = TextEditingController(text: "");
   TextEditingController fechaController = TextEditingController(text: "");
   TextEditingController placaController = TextEditingController(text: "");
+  TextEditingController documentoController = TextEditingController(text: "");
   TextEditingController estadoController = TextEditingController(text: "");
   TextEditingController servicioController = TextEditingController(text: "");
   @override
@@ -23,6 +24,7 @@ class _EditClienteState extends State<EditCitas> {
   nombreController.text = arguments ["nombre"];
   fechaController.text = arguments ["fecha"];
   placaController.text = arguments ["placa"];
+  documentoController.text = arguments ["documento"];
   estadoController.text = arguments ["estado"];
   servicioController.text = arguments ["servicio"];
   
@@ -54,6 +56,13 @@ class _EditClienteState extends State<EditCitas> {
             ),
           ),
            TextField(
+            enabled: false,
+            controller: documentoController,
+            decoration: const InputDecoration(
+            hintText: "ingrese su nueva documento",
+            ),
+          ),
+           TextField(
             controller: estadoController,
             decoration: const InputDecoration(
             hintText: "estado",
@@ -72,7 +81,7 @@ class _EditClienteState extends State<EditCitas> {
             // print(arguments["uid"]);// para ver que si este trayendo el id
             // });
 
-            await updateCita(arguments["uid"],nombreController.text, fechaController.text, placaController.text, estadoController.text, servicioController.text).then((_){
+            await updateCita(arguments["uid"],nombreController.text, fechaController.text, placaController.text, documentoController.text, estadoController.text, servicioController.text).then((_){
               Navigator.pop(context);
             });
           }, child: const Text("Acutializar"),)

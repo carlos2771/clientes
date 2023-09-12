@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 
+
 Future<List> getClientes() async {
   List clientes = [];
   CollectionReference collectionReference = db.collection("clientes");
@@ -39,6 +40,7 @@ Future<List> getCitas() async {
     final cita = {
       "uid": documento.id,
       "nombre": data["nombre"],
+      "documento": data["documento"],
       "fecha": data["fecha"],
       "placa": data["placa"],
       "estado": data["estado"],
@@ -48,6 +50,112 @@ Future<List> getCitas() async {
   }
   return citas;
 }
+
+
+
+// obtener una sola cita 
+Future<Map<String, dynamic>?> getClientePorUid(String uid) async {
+  try {
+    CollectionReference collectionReference = db.collection("clientes");
+
+    DocumentSnapshot documentSnapshot = await collectionReference.doc(uid).get();
+
+    if (documentSnapshot.exists) {
+      final Map<String, dynamic> data = documentSnapshot.data()
+          as Map<String, dynamic>;
+      final cliente = {
+        "uid": documentSnapshot.id,
+        "nombre": data["nombre"],
+        "apellido": data["apellido"],
+        "telefono": data["telefono"],
+        "email": data["email"],
+        "documento": data["documento"],
+        "password": data["password"],
+      };
+      return cliente;
+    } else {
+      // El cliente no existe
+      return null;
+    }
+  } catch (error) {
+    // Manejo de errores
+    print('Error al obtener el cliente: $error');
+    return null;
+  }
+}
+// encontrar por documento 
+Future<Map<String, dynamic>?> getClientePorEmail(String email) async {
+  try {
+    CollectionReference collectionReference = db.collection("clientes");
+
+    QuerySnapshot querySnapshot =
+        await collectionReference.where("email", isEqualTo: email).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+      final Map<String, dynamic> data = documentSnapshot.data()
+          as Map<String, dynamic>;
+      final cliente = {
+        "uid": documentSnapshot.id,
+        "nombre": data["nombre"],
+        "apellido": data["apellido"],
+        "telefono": data["telefono"],
+        "email": data["email"],
+        "documento": data["documento"],
+        "password": data["password"],
+      };
+      return cliente;
+    } else {
+      // El cliente no existe
+      return null;
+    }
+  } catch (error) {
+    // Manejo de errores
+    print('Error al obtener el cliente: $error');
+    return null;
+  }
+}
+
+
+
+
+
+
+
+Future<Map<String, dynamic>?> getCitaPorDocumento(String documento) async {
+  try {
+    CollectionReference collectionReference = db.collection("citas");
+
+    QuerySnapshot querySnapshot =
+        await collectionReference.where("documento", isEqualTo: documento).get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+      final Map<String, dynamic> data = documentSnapshot.data()
+          as Map<String, dynamic>;
+      final cita = {
+        "uid": documentSnapshot.id,
+        "nombre": data["nombre"],
+        "fecha": data["fecha"],
+        "placa": data["placa"],
+        "estado": data["estado"],
+        "servicio": data["servicio"],
+      };
+      return cita;
+    } else {
+      // La cita no existe
+      return null;
+    }
+  } catch (error) {
+    // Manejo de errores
+    print('Error al obtener la cita: $error');
+    return null;
+  }
+}
+
+
+
+
 
 //añadir los datos
 Future<void> addCliente(String nombre, String apellido, String telefono,
@@ -63,26 +171,20 @@ Future<void> addCliente(String nombre, String apellido, String telefono,
 }
 
 //añadir citas
-Future<void> addCita(String nombre, String fecha, String placa, String estado,
+Future<void> addCita(String nombre, String fecha, String placa, String documento, String estado,
     String servicio) async {
   await db.collection("citas").add({
     "nombre": nombre,
     "fecha": fecha,
     "placa": placa,
+    "documento": documento,
     "estado": estado,
     "servicio": servicio,
   });
 }
 
-Future<void> updateCliente(
-    String uid,
-    String newNombre,
-    String newApellido,
-    String newTelefono,
-    String newEmail,
-    String newDocumento,
-    String newPassword) async {
-  await db.collection("citas").doc(uid).set({
+Future<void> updateCliente(String uid,String newNombre,String newApellido,String newTelefono,String newEmail,String newDocumento,String newPassword) async {
+  await db.collection("clientes").doc(uid).set({
     "nombre": newNombre,
     "apellido": newApellido,
     "telefono": newTelefono,
@@ -93,12 +195,13 @@ Future<void> updateCliente(
 }
 
 // update Cita
-Future<void> updateCita(String uid, String newNombre, String newFecha,  String newPlaca, String newEstado, String newServicio)
+Future<void> updateCita(String uid, String newNombre, String newFecha,  String newPlaca, String newDocumento, String newEstado, String newServicio)
      async {
   await db.collection("citas").doc(uid).set({
     "nombre": newNombre,
     "fecha": newFecha,
     "placa": newPlaca,
+    "documento" : newDocumento,
     "estado": newEstado,
     "servicio": newServicio,
   });
@@ -116,4 +219,6 @@ Future<void> deleteCita(String uid) async {
   await db.collection("citas").doc(uid).delete();
 }
 
-Future<void> login(String email) async {}
+
+
+

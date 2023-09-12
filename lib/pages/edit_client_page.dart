@@ -31,10 +31,10 @@ class _EditClienteState extends State<EditCliente> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agregar cliente"),
+        title: const Text("Editar cliente"),
       ),
       
-      body :   Column(
+      body : Column(
         children: [
            TextField(
             controller: nombreController,

@@ -38,8 +38,8 @@ dependencies:
 
   cupertino_icons: ^1.0.5 # para los iconos
   flutter_local_notifications: ^15.1.0+1
-  firebase_core: ^2.15.0 #para hacer la conexion con firebase o inicializacion
-  cloud_firestore: ^4.8.4 #para instanciar cloud firestore de firebase
+  firebase_core: ^2.15.1 #para hacer la conexion con firebase o inicializacion
+  cloud_firestore: ^4.9.1 #para instanciar cloud firestore de firebase
   flutter_speed_dial: ^7.0.0 #para las animaciones de los botones
   firebase_auth: ^4.7.2 #permite integrar la funcionalidad de autenticación
   

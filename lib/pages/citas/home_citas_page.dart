@@ -1,4 +1,4 @@
- import 'package:clientes/services/firebase_services.dart';
+import 'package:clientes/services/firebase_services.dart';
 import 'package:clientes/services/notification_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -15,17 +15,17 @@ class _HomeState extends State<HomeCitas> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agenda de citas"),
+        title: const Text("Agenda de Citas"),
       ),
       body: FutureBuilder(
         future: getCitas(),
         builder: ((context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text('Error al cargar los datos'));
+            return Center(child: Text('Error al cargar los datos'));
           } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-            return const Center(child: Text('No hay clientes disponibles'));
+            return Center(child: Text('No hay clientes disponibles'));
           } else {
             return ListView.builder(
               itemCount: snapshot.data.length,
@@ -71,38 +71,37 @@ class _HomeState extends State<HomeCitas> {
                     child: const Icon(Icons.delete),
                   ),
                   direction: DismissDirection.endToStart,
-                  child: ListTile(
-                    title: Text(
-                      "Nombre: ${citas["nombre"]} Fecha: ${citas["fecha"]} placa ${citas["placa"]} Estado ${citas["estado"]} Servicio ${citas["servicio"]}  ",
-                    ),
-                    onTap: () async {
-                      await Navigator.pushNamed(context, "/editcita", arguments: {
-                        "uid": citas["uid"],
-                        "nombre": citas["nombre"],
-                        "fecha": citas["fecha"],
-                        "placa": citas["placa"],
-                        "estado": citas["estado"],
-                        "servicio": citas["servicio"]
-                        
-                      });
-                      setState(() {});
-                    },
-                    //MOSTRAR NOTIFICACION
-                    trailing: ElevatedButton( // boton de notificacion
-                      onPressed: () {
-                        
-                        mostrarNotificacion();
+                  child: Card(
+                    margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    child: ListTile(
+                      title: Text(
+                        "Nombre: ${citas["nombre"]}",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text("Fecha: ${citas["fecha"]}\nPlaca: ${citas["placa"]}\nDocumento: ${citas["documento"]}\nEstado: ${citas["estado"]}\nServicio: ${citas["servicio"]}"),
+                      onTap: () async {
+                        await Navigator.pushNamed(context, "/editcita", arguments: {
+                          "uid": citas["uid"],
+                          "nombre": citas["nombre"],
+                          "fecha": citas["fecha"],
+                          "placa": citas["placa"],
+                          "documento": citas["documento"],
+                          "estado": citas["estado"],
+                          "servicio": citas["servicio"]
+                        });
+                        setState(() {});
                       },
-                      child: const Text("True"),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          mostrarNotificacion();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                          
+                        ),
+                        child: const Text("Notificar"),
+                      ),
                     ),
-
-                    // trailing: ElevatedButton(
-                    //   onPressed: () {
-                    //      Navigator.pushNamed(context, "/citas");
-                    //   },
-                    //   child: const Text("Agendar"),
-                    // ),
-
                   ),
                 );
               },
@@ -116,7 +115,7 @@ class _HomeState extends State<HomeCitas> {
           SpeedDialChild(
             label: 'Clientes',
             onTap: () async {
-              await Navigator.pushNamed(context, "/");
+              await Navigator.pushNamed(context, "/homepage");
               setState(() {});
             },
           ),

@@ -31,8 +31,9 @@ class _AddCitasState extends State<AddCitas> {
 
   @override
   Widget build(BuildContext context) {
-    final Map arguments = ModalRoute.of(context)!.settings.arguments as Map;
+    final Map arguments = ModalRoute.of(context)!.settings.arguments  as Map;
     TextEditingController nombreController = TextEditingController( text: arguments["nombre"]);
+    TextEditingController documentoController = TextEditingController( text: arguments["documento"]);
 
 
     return Scaffold(
@@ -61,9 +62,16 @@ class _AddCitasState extends State<AddCitas> {
             ),
           ),
           TextField(
+            enabled: false,
+            controller: documentoController,
+            decoration: const InputDecoration(
+              hintText: "Ingrese el documento",
+            ),
+          ),
+          TextField(
             controller: estadoController,
             decoration: const InputDecoration(
-              hintText: "Ingrese la placa",
+              hintText: "",
             ),
           ),
          
@@ -77,7 +85,7 @@ class _AddCitasState extends State<AddCitas> {
           ),
           ElevatedButton(
             onPressed: () async {
-              await addCita(nombreController.text, fechaController.text, placaController.text, estadoController.text , servicioController.text);
+              await addCita(nombreController.text, fechaController.text, placaController.text, documentoController.text,  estadoController.text , servicioController.text);
               // ignore: use_build_context_synchronously
               Navigator.pushNamed(context, "/homecitas");
             },
