@@ -1,7 +1,7 @@
 import 'package:clientes/pages/citas/add_citas_page.dart';
 import 'package:clientes/pages/citas/edit_cita_page.dart';
 import 'package:clientes/pages/citas/home_citas_page.dart';
-import 'package:clientes/pages/clientes/home_page_cliente.dart';
+import 'package:clientes/pages/clientes/citas_cliente.dart';
 import 'package:clientes/pages/clientes/mi_cita.dart';
 import 'package:clientes/pages/clientes/perfil_cliente.dart';
 import 'package:clientes/pages/clientes/register_cliente_page.dart';
@@ -50,6 +50,8 @@ class MyApp extends StatelessWidget {
         //Register Cliente
         "/register" :(context) => const RegisterCliente(),
         "/perfil" :(context) => const PerfilCliente(),
+        "/citascliente" :(context) => const AddCitasClient(),
+        
 
     
       },

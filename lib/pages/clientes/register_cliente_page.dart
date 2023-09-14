@@ -1,7 +1,5 @@
 import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 
 class RegisterCliente extends StatefulWidget {
   const RegisterCliente({Key? key});
@@ -9,8 +7,6 @@ class RegisterCliente extends StatefulWidget {
   @override
   State<RegisterCliente> createState() => _RegisterClienteState();
 }
-
-
 
 class _RegisterClienteState extends State<RegisterCliente> {
   TextEditingController nombreController = TextEditingController(text: "");
@@ -21,90 +17,119 @@ class _RegisterClienteState extends State<RegisterCliente> {
   TextEditingController password1Controller = TextEditingController(text: "");
   TextEditingController password2Controller = TextEditingController(text: "");
 
-  //validaciones
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  get labelLabelText => null; // Clave global para el formulario
+
+  // Validación de correo electrónico
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese un correo electrónico';
+    }
+    // Puedes agregar una validación más sofisticada aquí si lo deseas
+    if (!value.contains('@')) {
+      return 'Ingrese un correo electrónico válido';
+    }
+    return null;
+  }
+
+  // Validación de contraseña
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Ingrese una contraseña';
+    }
+    if (value.length < 6) {
+      return 'La contraseña debe tener al menos 6 caracteres';
+    }
+    return null;
+  }
+
+  // Validación de confirmación de contraseña
+  String? _validatePasswordConfirmation(String? value) {
+    if (value != password1Controller.text) {
+      return 'Las contraseñas no coinciden';
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agregar cliente"),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: const Text(
+          "Agregar Cliente",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextField(
-              controller: nombreController,
-              decoration: const InputDecoration(
-                hintText: "Ingrese su nombre",
+        child: Form(
+          key: _formKey, // Asigna la clave del formulario
+          child: Column(
+            children: [
+              _buildTextField(nombreController, "Nombre"),
+              _buildTextField(apellidoController, "Apellido"),
+              _buildTextField(telefonoController, "Teléfono", maxLength: 10),
+              _buildTextField(emailController, "Email", validator: _validateEmail),
+              _buildTextField(documentoController, "Documento"),
+              _buildTextField(password1Controller, "Contraseña", validator: _validatePassword, obscureText: true),
+              _buildTextField(password2Controller, "Confirmar Contraseña", validator: _validatePasswordConfirmation, obscureText: true),
+              ElevatedButton(
+                onPressed: () async {
+                  // Verifica si el formulario es válido antes de continuar
+                  if (_formKey.currentState!.validate()) {
+                    // Las contraseñas coinciden y el correo electrónico es válido
+                    await addCliente(
+                      nombreController.text,
+                      apellidoController.text,
+                      telefonoController.text,
+                      emailController.text,
+                      documentoController.text,
+                      password1Controller.text,
+                    ).then((_) {
+                      Navigator.pushNamed(context, "/");
+                      setState(() {});
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black,
+                ),
+                child: const Text(
+                  "Guardar",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ),
-            ),
-            TextField(
-              controller: apellidoController,
-              decoration: const InputDecoration(
-                hintText: "Ingrese su apellido",
-              ),
-            ),
-            TextField(
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(10), // Limitar a 10 caracteres
-                FilteringTextInputFormatter.digitsOnly,
-              ],
-              controller: telefonoController,
-              decoration: const InputDecoration(
-                hintText: "Ingrese su telefono",
-              ),
-            ),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                hintText: "Ingrese su email",
-              ),
-            ),
-            TextField(
-              controller: documentoController,
-              decoration: const InputDecoration(
-                hintText: "Ingrese su documento",
-              ),
-            ),
-            TextField(
-              controller: password1Controller,
-              decoration: const InputDecoration(
-                hintText: "Ingrese contraseña ",
-              ),
-            ),
-            TextField(
-              controller: password2Controller,
-              decoration: const InputDecoration(
-                hintText: "Confirme la contraseña",
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                // Tu código de acción aquí
-                await addCliente(
-                        nombreController.text,
-                        apellidoController.text,
-                        telefonoController.text,
-                        emailController.text,
-                        documentoController.text,
-                        password1Controller.text)
-                    .then((_) {
-                //  Navigator.pushNamed(context, "/perfil", arguments: {
-                //           "nombre": nombreController.text,
-                //           "apellido": apellidoController.text,
-                //           "telefono": telefonoController.text,
-                //           "email": emailController.text,
-                //           "documento": documentoController.text,
-                //           "password": password1Controller.text,
-                //         }); este es para el editar sirve en otra parte o para pruebas 
-                Navigator.pushNamed(context, "/");
-                        setState(() {});
-                });
-                //  await addParams(nombreController.text);
-              },
-              child: const Text("Guardar"),
-            )
-          ],
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+    TextEditingController controller,
+    String labelText, {
+    int? maxLength,
+    String? Function(String?)? validator,
+    bool obscureText = false,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        maxLength: maxLength,
+        validator: validator, // Asigna el validador
+        obscureText: obscureText, // Oculta la contraseña si es necesario
+        decoration: InputDecoration(
+          labelText: labelText,
+          hintText: "Ingrese su $labelLabelText",
+          border: const OutlineInputBorder(),
         ),
       ),
     );

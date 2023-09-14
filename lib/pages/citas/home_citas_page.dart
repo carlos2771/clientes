@@ -15,7 +15,12 @@ class _HomeState extends State<HomeCitas> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agenda de Citas"),
+        backgroundColor: Colors.black, // Cambia el color del AppBar a negro
+        centerTitle: true, // Centra el texto del AppBar
+        title: const Text(
+          "Agenda de Citas",
+          style: TextStyle(color: Colors.white), // Cambia el color del texto del AppBar a blanco
+        ),
       ),
       body: FutureBuilder(
         future: getCitas(),
@@ -96,10 +101,9 @@ class _HomeState extends State<HomeCitas> {
                           mostrarNotificacion();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          
+                          primary: Colors.black, // Cambia el color del botón a negro
                         ),
-                        child: const Text("Notificar"),
+                        child: const Text("Notificar", style: TextStyle(color: Colors.white)), // Cambia el color del texto del botón a blanco
                       ),
                     ),
                   ),
@@ -110,7 +114,10 @@ class _HomeState extends State<HomeCitas> {
         }),
       ),
       floatingActionButton: SpeedDial(
+        
         animatedIcon: AnimatedIcons.menu_close,
+        backgroundColor:
+            Colors.black,
         children: [
           SpeedDialChild(
             label: 'Clientes',

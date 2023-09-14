@@ -1,5 +1,5 @@
- import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter/material.dart';
+import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +14,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Clientes"),
+        backgroundColor:
+            Colors.black, // Cambia el color de la barra de aplicación a negro
+        title: const Text(
+          "Clientes",
+          textAlign: TextAlign.center, // Centra el texto del AppBar
+        ),
+        centerTitle: true, // Centra el título del AppBar
       ),
       body: FutureBuilder(
         future: getClientes(),
@@ -99,21 +105,21 @@ class _HomeState extends State<Home> {
                             "Teléfono: ${cliente["telefono"]}",
                             style: const TextStyle(
                               fontSize: 16.0,
-                              color: Color.fromARGB(255, 33, 149, 243),
+                              color: Color.fromARGB(255, 2, 2, 2),
                             ),
                           ),
                           Text(
                             "Email: ${cliente["email"]}",
                             style: const TextStyle(
                               fontSize: 16.0,
-                              color: Colors.blue,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                           Text(
                             "Documento: ${cliente["documento"]}",
                             style: const TextStyle(
                               fontSize: 16.0,
-                              color: Colors.blue,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                         ],
@@ -138,7 +144,10 @@ class _HomeState extends State<Home> {
                             "documento": cliente["documento"],
                           });
                         },
-                        
+                        style: ElevatedButton.styleFrom(
+                          primary:
+                              Colors.black, // Cambia el color del botón a negro
+                        ),
                         child: const Text("Agendar"),
                       ),
                     ),
@@ -151,6 +160,8 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
+        backgroundColor:
+            Colors.black, // Cambia el color del FloatingActionButton a negro
         children: [
           SpeedDialChild(
             label: 'Agregar cliente',

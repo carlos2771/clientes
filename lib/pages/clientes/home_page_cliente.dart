@@ -18,7 +18,14 @@ class _ClienteViewState extends State<ClienteView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tu perfil'),
+        backgroundColor: Colors.black, // Cambia el color del AppBar a negro
+        centerTitle: true, // Centra el texto del AppBar
+        title: const Text(
+          'Tu Perfil',
+          style: TextStyle(
+            color: Colors.white, // Cambia el color del texto del AppBar a blanco
+          ),
+        ),
       ),
       body: FutureBuilder<Map<String, dynamic>?>(
         future: widget.clienteFuture,
@@ -40,7 +47,7 @@ class _ClienteViewState extends State<ClienteView> {
             return Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage('https://c4.wallpaperflare.com/wallpaper/177/391/765/anime-girls-motorcycle-hd-wallpaper-preview.jpg'), // Reemplaza con la URL de tu imagen de fondo
+                  image: NetworkImage('https://images.unsplash.com/photo-1604260324056-45f7c778754a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGFsbGVyJTIwZGUlMjBtb3Rvc3xlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80'), // Reemplaza con la URL de tu imagen de fondo
                   fit: BoxFit.cover,
                 ),
               ),
@@ -82,7 +89,10 @@ class _ClienteViewState extends State<ClienteView> {
                         });
                         setState(() {});
                       },
-                      child: const Text("Editar Perfil"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black, // Cambia el color del botón a negro
+                      ),
+                      child: const Text("Editar Perfil", style: TextStyle(color: Colors.white)),
                     ),
                     ElevatedButton(
                       onPressed: () {
@@ -97,7 +107,23 @@ class _ClienteViewState extends State<ClienteView> {
                           ),
                         );     
                       },
-                      child: const Text("Mis Citas"),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black, // Cambia el color del botón a negro
+                      ),
+                      child: const Text("Mis Citas", style: TextStyle(color: Colors.white)),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/citascliente", arguments: {
+                          "uid": cliente["uid"],
+                          "nombre": cliente["nombre"],
+                          "documento": cliente["documento"],
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.black, // Cambia el color del botón a negro
+                      ),
+                      child: const Text("Agendar Cita", style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -108,14 +134,9 @@ class _ClienteViewState extends State<ClienteView> {
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
+         backgroundColor:
+            Colors.black,
         children: [
-          SpeedDialChild(
-            label: 'Agendar Cita',
-            onTap: () async {
-              await Navigator.pushNamed(context, "/add");
-              setState(() {});
-            },
-          ),
           SpeedDialChild(
             label: 'Salir',
             onTap: () async {
