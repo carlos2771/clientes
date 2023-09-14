@@ -1,5 +1,5 @@
-import 'package:clientes/services/firebase_services.dart';
 import 'package:flutter/material.dart';
+import 'package:clientes/services/firebase_services.dart';
 
 class AddCliente extends StatefulWidget {
   const AddCliente({Key? key});
@@ -18,15 +18,12 @@ class _AddClienteState extends State<AddCliente> {
   TextEditingController password2Controller = TextEditingController(text: "");
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
-  get labelLabelText => null; // Clave global para el formulario
 
   // Validación de correo electrónico
   String? _validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'Ingrese un correo electrónico';
     }
-    // Puedes agregar una validación más sofisticada aquí si lo deseas
     if (!value.contains('@')) {
       return 'Ingrese un correo electrónico válido';
     }
@@ -52,6 +49,36 @@ class _AddClienteState extends State<AddCliente> {
     return null;
   }
 
+  // Validación de campo de texto no vacío
+  String? _validateText(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+    return null;
+  }
+
+  // Validación de número de teléfono
+  String? _validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+    if (value.length != 10 || !isNumeric(value)) {
+      return 'Ingrese un número de teléfono válido';
+    }
+    return null;
+  }
+
+  // Validación de número de documento
+  String? _validateNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Este campo es obligatorio';
+    }
+    if (!isNumeric(value)) {
+      return 'Ingrese un número válido';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,21 +94,19 @@ class _AddClienteState extends State<AddCliente> {
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: _formKey, // Asigna la clave del formulario
+          key: _formKey,
           child: Column(
             children: [
-              _buildTextField(nombreController, "Nombre"),
-              _buildTextField(apellidoController, "Apellido"),
-              _buildTextField(telefonoController, "Teléfono", maxLength: 10),
+              _buildTextField(nombreController, "Nombre", validator: _validateText),
+              _buildTextField(apellidoController, "Apellido", validator: _validateText),
+              _buildTextField(telefonoController, "Teléfono", maxLength: 10, validator: _validatePhone),
               _buildTextField(emailController, "Email", validator: _validateEmail),
-              _buildTextField(documentoController, "Documento"),
+              _buildTextField(documentoController, "Documento", validator: _validateNumber),
               _buildTextField(password1Controller, "Contraseña", validator: _validatePassword, obscureText: true),
               _buildTextField(password2Controller, "Confirmar Contraseña", validator: _validatePasswordConfirmation, obscureText: true),
               ElevatedButton(
                 onPressed: () async {
-                  // Verifica si el formulario es válido antes de continuar
                   if (_formKey.currentState!.validate()) {
-                    // Las contraseñas coinciden y el correo electrónico es válido
                     await addCliente(
                       nombreController.text,
                       apellidoController.text,
@@ -124,14 +149,21 @@ class _AddClienteState extends State<AddCliente> {
       child: TextFormField(
         controller: controller,
         maxLength: maxLength,
-        validator: validator, // Asigna el validador
-        obscureText: obscureText, // Oculta la contraseña si es necesario
+        validator: validator,
+        obscureText: obscureText,
         decoration: InputDecoration(
           labelText: labelText,
-          hintText: "Ingrese su $labelLabelText",
+          hintText: "Ingrese su $labelText",
           border: const OutlineInputBorder(),
         ),
       ),
     );
+  }
+
+  bool isNumeric(String? str) {
+    if (str == null) {
+      return false;
+    }
+    return double.tryParse(str) != null;
   }
 }
